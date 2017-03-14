@@ -7,7 +7,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "", propOrder = {"phoneNumber", "email", "password", "name", "lastName", "info" })
+@XmlType(name = "", propOrder = {"phoneNumber", "email", "password", "name", "lastName" /*"info"*/ })
 @XmlRootElement(name = "MasterType")
 public class MasterType {
 
@@ -20,8 +20,8 @@ public class MasterType {
 	protected String name;
 	@XmlElement(required = true)
 	protected String lastName;
-	@XmlElement(required = true)
-	protected String info;
+//	@XmlElement(required = true)
+//	protected String info;
 
 	public String getPhoneNumber() {
 		return phoneNumber;
@@ -63,12 +63,12 @@ public class MasterType {
 		this.lastName = lastName;
 	}
 
-	public String getInfo() {
-		return info;
-	}
-
-	public void setInfo(String info) {
-		this.info = info;
-	}
+//	public String getInfo() {
+//		return info;
+//	}
+//
+//	public void setInfo(String info) {
+//		this.info = info;
+//	}
 
 }

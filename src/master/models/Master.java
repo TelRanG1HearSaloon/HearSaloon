@@ -25,8 +25,8 @@ public class Master implements Serializable{
     
     String lastName;
     
-    
-    String info;
+//    
+//    String info;
     
     
 
@@ -40,15 +40,15 @@ public class Master implements Serializable{
         this.arrLocations = new ArrayList<String>();*/
     }
 
-    public Master(String phoneNumber, String email, String password, String name, String lastName ) {
-        this.email = email;
-        this.password = password;
-        this.name = name;
-        this.lastName = lastName;
-        this.phoneNumber = phoneNumber;
-        /*this.services = new ArrayList<Service>();
-        this.arrLocations = new ArrayList<String>();*/
-    }
+//    public Master(String phoneNumber, String email, String password, String name, String lastName ) {
+//        this.email = email;
+//        this.password = password;
+//        this.name = name;
+//        this.lastName = lastName;
+//        this.phoneNumber = phoneNumber;
+//        /*this.services = new ArrayList<Service>();
+//        this.arrLocations = new ArrayList<String>();*/
+//    }
 
     public String getPhoneNumber() {
         return phoneNumber;
@@ -90,13 +90,13 @@ public class Master implements Serializable{
         this.lastName = lastName;
     }
 
-    public String getInfo() {
-        return info;
-    }
-
-    public void setInfo(String info) {
-        this.info = info;
-    }
+//    public String getInfo() {
+//        return info;
+//    }
+//
+//    public void setInfo(String info) {
+//        this.info = info;
+//    }
 
     /*public ArrayList<Service> getServices() {
         return services;

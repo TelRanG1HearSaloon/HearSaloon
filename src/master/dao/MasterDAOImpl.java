@@ -11,6 +11,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import master.models.Master;
+import master.types.AuthType;
 
 @Repository("masterDAO")
 public class MasterDAOImpl implements MasterDAO {
@@ -39,8 +40,15 @@ public class MasterDAOImpl implements MasterDAO {
 	}
 
 	@Override
-	public String updateMasterInfo(Master updateMaster) {
-		// TODO Auto-generated method stub
+	public Master updateMasterInfo(AuthType updateMaster) {
+
+		
+		if(em.find(Master.class, updateMaster.getPhoneNumber())!=null){
+			Master master = em.find(Master.class, updateMaster.getPhoneNumber());
+			if(master.getPassword().equals(updateMaster.getPassword())){
+				return master;
+			}
+		}
 		return null;
 	}
 

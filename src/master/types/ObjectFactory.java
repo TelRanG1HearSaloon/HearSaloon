@@ -43,5 +43,11 @@ public class ObjectFactory {
     public MasterListType createBookListType() {
         return new MasterListType();
     }
+   
+    public AuthType createAuthType(){
+    	return new AuthType();
+    }
+    
+  
 
 }
