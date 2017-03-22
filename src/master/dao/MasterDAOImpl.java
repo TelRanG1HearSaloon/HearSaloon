@@ -40,7 +40,7 @@ public class MasterDAOImpl implements MasterDAO {
 	}
 
 	@Override
-	public Master updateMasterInfo(AuthType updateMaster) {
+	public Master loginMaster(AuthType updateMaster) {
 
 		
 		if(em.find(Master.class, updateMaster.getPhoneNumber())!=null){

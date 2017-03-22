@@ -81,10 +81,10 @@ public class MasterServiceImpl implements IMasterService {
 	public Response updateMasterInfo(AuthType authType) {
 		if(authType == null){
 			return Response.status(Response.Status.NO_CONTENT).build();
-		}else if(masterDAO.updateMasterInfo(authType) == null){
+		}else if(masterDAO.loginMaster(authType) == null){
 			return Response.status(Response.Status.UNAUTHORIZED).build();
 		}
-		Master master = masterDAO.updateMasterInfo(authType);
+		Master master = masterDAO.loginMaster(authType);
 		MasterType masterType = new MasterType();
 		
 		masterType.setEmail(master.getEmail());
