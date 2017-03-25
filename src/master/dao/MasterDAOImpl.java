@@ -22,7 +22,7 @@ public class MasterDAOImpl implements MasterDAO {
 	@Override
 	@Transactional
 	public Master insertNewMasterInfo(Master addMaster) {
-		   if(em.find(addMaster.getClass(), addMaster.getPhoneNumber())!=null){
+		   if(em.find(addMaster.getClass(), addMaster.getEmail())!=null){
 	            return null;
 	        }
 	       
@@ -54,8 +54,17 @@ public class MasterDAOImpl implements MasterDAO {
 
 	@Override
 	public String removeMasterInfo(Master removeMaster) {
-		// TODO Auto-generated method stub
-		return null;
+		 if(em.find(removeMaster.getClass(), removeMaster.getEmail())!=null){
+			 Master master = em.find(removeMaster.getClass(), removeMaster.getEmail());
+			 em.getTransaction().begin();
+			 
+			 if( master.getPassword().equals(removeMaster.getPassword())){
+				 
+			 return "OK";
+			 }
+			 return "Wrong password";
+	        }
+		 return "NULL";
 	}
 
 	@Override

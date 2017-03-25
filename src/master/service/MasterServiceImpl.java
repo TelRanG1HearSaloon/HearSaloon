@@ -25,38 +25,22 @@ import org.springframework.stereotype.Component;
 public class MasterServiceImpl implements IMasterService {
 
 
-
 	@Autowired
 	private MasterDAO masterDAO;
 
 	// http://localhost:8080/HearSaloon/rest/masterservice/master
 	@POST
 	@Path("master")
-	@Consumes({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
-	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.TEXT_HTML })
+	@Produces({MediaType.APPLICATION_JSON,MediaType.TEXT_HTML })
 	public Response createOrSaveMasterInfo(MasterType masterType) {
 		Master newMaster = new Master();
 		newMaster.setEmail(masterType.getEmail());
-//		newMaster.setInfo(masterType.getInfo());
-		newMaster.setLastName(masterType.getLastName());
-		newMaster.setName(masterType.getName());
 		newMaster.setPassword(masterType.getPassword());
-		newMaster.setPhoneNumber(masterType.getPhoneNumber());
-
-		Master master = new Master();
 		if (masterDAO.insertNewMasterInfo(newMaster) == null) {
-			return Response.status(Response.Status.BAD_REQUEST).build();
+			return Response.status(Response.Status.FORBIDDEN).build();
 		}
-		MasterType masterType2 = new MasterType();
-
-		masterType2.setEmail(master.getEmail());
-//		masterType2.setInfo(master.getInfo());
-		masterType2.setLastName(master.getLastName());
-		masterType2.setName(master.getName());
-		masterType2.setPassword(master.getPassword());
-		masterType2.setPhoneNumber(master.getPhoneNumber());
-
-		return Response.status(Response.Status.ACCEPTED).build();
+		return Response.status(Response.Status.ACCEPTED).entity(newMaster).build();
 	}
 
 	// http://localhost:8080/HearSaloon/rest/masterservice/getmaster/1
@@ -115,5 +99,26 @@ public class MasterServiceImpl implements IMasterService {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
+	
+	@POST
+	@Path("update")
+	@Consumes({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response updateMaster(MasterType masterType){
+		Master master = new Master();
+		master.setEmail(masterType.getEmail());
+		master.setLastName(masterType.getLastName());
+		master.setName(masterType.getName());
+		master.setPassword(masterType.getPassword());
+		master.setPhoneNumber(masterType.getPhoneNumber());
+		
+		String str = masterDAO.removeMasterInfo(master);
+		if(str.equals("OK")){
+			return Response.accepted().build();
+		}else if(str.equals("Wrong password")){
+			return Response.status(Response.Status.NOT_ACCEPTABLE).build();
+		}
+		
+		return Response.status(Response.Status.BAD_REQUEST).build();
+	}
 }

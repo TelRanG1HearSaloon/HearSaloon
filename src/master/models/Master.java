@@ -9,11 +9,11 @@ import javax.persistence.Id;
 @Entity
 public class Master implements Serializable{
 	private static final long serialVersionUID = 112234556l;
-    @Id
+    
     String phoneNumber;
     
     
-    
+    @Id
     String email;
     
     
