@@ -1,28 +1,28 @@
-package master.models;
+package client.dao;
 
-import java.io.Serializable;
-
-
-import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
 
-@Entity
-public class Client implements Serializable{
-	
-	private static final long serialVersionUID = 112234557l;
-    protected String clientPhoneNumber;
-    
-    @Id
-    protected String clientEmail;
-    
-	protected String clientPassword;
-    
-	protected String clientName;
-    
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlType(name = "", propOrder = {"clientEmail", "clientPassword","clientPhoneNumber","clientName","clientLastName" })
+@XmlRootElement(name = "ClientType")
+public class ClientType {
+	@XmlElement(required = true)
+    protected String clientPhoneNumber; 
+	@XmlElement(required = true)
+    protected String clientEmail;    
+	@XmlElement(required = true)
+	protected String clientPassword;    
+	@XmlElement(required = true)
+	protected String clientName;    
+	@XmlElement(required = true)
 	protected String clientLastName;
-
-
-	public Client() {
+	
+	public ClientType() {
 		super();
 	}
 
@@ -75,7 +75,5 @@ public class Client implements Serializable{
 	public void setClientLastName(String clientLastName) {
 		this.clientLastName = clientLastName;
 	}
-
-
 
 }

@@ -10,7 +10,7 @@ public interface IMasterService {
 
 	public Response getMasterInfo(String phoneNumber);
 
-	public Response updateMasterInfo(AuthType masterType);
+	public Response loginMaster(AuthType masterType);
 
 	public Response deleteMasterInfo(String phoneNumber);
 

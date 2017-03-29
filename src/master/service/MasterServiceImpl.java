@@ -1,6 +1,7 @@
 package master.service;
 
 import master.dao.MasterDAO;
+import master.models.Client;
 import master.models.Master;
 import master.types.AuthType;
 import master.types.MasterType;
@@ -20,6 +21,9 @@ import javax.ws.rs.core.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import client.dao.ClientDAO;
+import client.dao.ClientType;
+
 @Component
 @Path("/masterservice")
 public class MasterServiceImpl implements IMasterService {
@@ -27,6 +31,8 @@ public class MasterServiceImpl implements IMasterService {
 
 	@Autowired
 	private MasterDAO masterDAO;
+	@Autowired
+	private ClientDAO clientDAO;
 
 	// http://localhost:8080/HearSaloon/rest/masterservice/master
 	@POST
@@ -37,7 +43,13 @@ public class MasterServiceImpl implements IMasterService {
 		Master newMaster = new Master();
 		newMaster.setEmail(masterType.getEmail());
 		newMaster.setPassword(masterType.getPassword());
-		if (masterDAO.insertNewMasterInfo(newMaster) == null) {
+		newMaster.setLastName(masterType.getLastName());
+		newMaster.setName(masterType.getName());
+		newMaster.setPhoneNumber(masterType.getPhoneNumber());
+		if(newMaster.getEmail() == null || newMaster.getPassword() == null || newMaster.getEmail().equals("") || newMaster.getPassword().equals("")){
+			return Response.status(Response.Status.FORBIDDEN).build();
+		}
+		else if (masterDAO.insertNewMasterInfo(newMaster) == null) {
 			return Response.status(Response.Status.FORBIDDEN).build();
 		}
 		return Response.status(Response.Status.ACCEPTED).entity(newMaster).build();
@@ -62,7 +74,7 @@ public class MasterServiceImpl implements IMasterService {
 	@Path("master")
 	@Consumes({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response updateMasterInfo(AuthType authType) {
+	public Response loginMaster(AuthType authType) {
 		if(authType == null){
 			return Response.status(Response.Status.NO_CONTENT).build();
 		}else if(masterDAO.loginMaster(authType) == null){
@@ -120,5 +132,28 @@ public class MasterServiceImpl implements IMasterService {
 		}
 		
 		return Response.status(Response.Status.BAD_REQUEST).build();
+	}
+	
+	
+	@POST
+	@Path("client")
+	@Consumes({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.TEXT_HTML })
+	@Produces({MediaType.APPLICATION_JSON,MediaType.TEXT_HTML })
+	public Response createOrSaveClientInfo(ClientType clientType) {
+		Client client = new Client();
+		client.setClientEmail(clientType.getClientEmail());
+		client.setClientLastName(clientType.getClientLastName());
+		client.setClientName(clientType.getClientName());
+		client.setClientPassword(clientType.getClientPassword());
+		client.setClientPhoneNumber(clientType.getClientPhoneNumber());
+		if(client.getClientEmail() == null || client.getClientPassword() == null || client.getClientEmail().equals("") || client.getClientPassword().equals("")){
+			return Response.status(Response.Status.BAD_REQUEST).build();
+		}
+		else if(clientDAO.insertNewClientInfo(client)==null){
+			return Response.status(Response.Status.CONFLICT).build();
+		}
+		
+		
+		return Response.ok(client).build();
 	}
 }
