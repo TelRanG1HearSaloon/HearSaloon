@@ -32,19 +32,23 @@ public class MasterDAOImpl implements MasterDAO {
 	}
 
 	@Override
-	public Master getMasterInfo(String phoneNumber) {
-		if(em.find(Master.class, phoneNumber)!=null){
-			return em.find(Master.class, phoneNumber);
+	public Master getMasterInfo(Master master) {
+		Master master1 = new Master();		
+		if((master1 = em.find(Master.class, master.getEmail()))!=null){
+//			Master master = em.find(Master.class, updateMaster.getEmail());
+			if(master1.getPassword().equals(master.getPassword())){
+				return master1;
+			}
 		}
 		return null;
 	}
 
 	@Override
 	public Master loginMaster(AuthType updateMaster) {
-
+		Master master = new Master();
 		
-		if(em.find(Master.class, updateMaster.getPhoneNumber())!=null){
-			Master master = em.find(Master.class, updateMaster.getPhoneNumber());
+		if((master = em.find(Master.class, updateMaster.getEmail()))!=null){
+//			Master master = em.find(Master.class, updateMaster.getEmail());
 			if(master.getPassword().equals(updateMaster.getPassword())){
 				return master;
 			}

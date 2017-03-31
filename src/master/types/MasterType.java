@@ -11,6 +11,7 @@ import javax.xml.bind.annotation.XmlType;
 @XmlRootElement(name = "MasterType")
 public class MasterType {
 
+	@XmlElement(required = true)
 	protected String phoneNumber;
 	@XmlElement(required = true)
 	protected String email;

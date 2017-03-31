@@ -9,28 +9,28 @@ import javax.xml.bind.annotation.XmlType;
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = {"phoneNumber", "password" })
 @XmlRootElement(name = "AuthType")
-public class AuthType {
+public class ClientAuthType {
 	@XmlElement(required = true)
-	protected String email;
+	protected String clientEmail;
 	@XmlElement(required = true)
-	protected String password;
+	protected String clientPassword;
 	
 	
-	public AuthType() {
+	public ClientAuthType() {
 		super();
 	}
-	public String getEmail() {
-		return email;
+	public String getClientEmail() {
+		return clientEmail;
 	}
-	public void setEmail(String email) {
-		this.email = email;
+	public void setClientEmail(String clientEmail) {
+		this.clientEmail = clientEmail;
 	}
-	public String getPassword() {
-		return password;
+	public String getClientPassword() {
+		return clientPassword;
 	}
-	public void setPassword(String password) {
-		this.password = password;
+	public void setClientPassword(String clientPassword) {
+		this.clientPassword = clientPassword;
 	}
-
 	
+
 }

@@ -4,6 +4,7 @@ import master.dao.MasterDAO;
 import master.models.Client;
 import master.models.Master;
 import master.types.AuthType;
+import master.types.ClientAuthType;
 import master.types.MasterType;
 
 
@@ -15,6 +16,8 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
@@ -25,7 +28,7 @@ import client.dao.ClientDAO;
 import client.dao.ClientType;
 
 @Component
-@Path("/masterservice")
+@Path("/hairsalon")
 public class MasterServiceImpl implements IMasterService {
 
 
@@ -36,7 +39,7 @@ public class MasterServiceImpl implements IMasterService {
 
 	// http://localhost:8080/HearSaloon/rest/masterservice/master
 	@POST
-	@Path("master")
+	@Path("master/register")
 	@Consumes({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.TEXT_HTML })
 	@Produces({MediaType.APPLICATION_JSON,MediaType.TEXT_HTML })
 	public Response createOrSaveMasterInfo(MasterType masterType) {
@@ -58,10 +61,12 @@ public class MasterServiceImpl implements IMasterService {
 	// http://localhost:8080/HearSaloon/rest/masterservice/getmaster/1
 	@GET
 	@Path("master/{id}")
-	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
 	@Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
-	public Response getMasterInfo(@PathParam("id") String phoneNumber) {
-		Master masterType = masterDAO.getMasterInfo(phoneNumber);
+	public Response getMasterInfo(@Context HttpHeaders headers, @PathParam("id") String email) {
+		Master master = new Master();
+		master.setEmail(email);
+		master.setPassword(headers.getRequestHeader("token").get(0));
+		Master masterType = masterDAO.getMasterInfo(master);
 		if (masterType == null) {
 			return Response.status(Response.Status.BAD_REQUEST).build();
 		}
@@ -70,8 +75,8 @@ public class MasterServiceImpl implements IMasterService {
 	}
 
 	// http://localhost:8080/HearSaloon/rest/masterservice/master
-	@PUT
-	@Path("master")
+	@POST
+	@Path("master/login")
 	@Consumes({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response loginMaster(AuthType authType) {
@@ -113,7 +118,7 @@ public class MasterServiceImpl implements IMasterService {
 	}
 	
 	@POST
-	@Path("update")
+	@Path("master/update")
 	@Consumes({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response updateMaster(MasterType masterType){
@@ -136,7 +141,7 @@ public class MasterServiceImpl implements IMasterService {
 	
 	
 	@POST
-	@Path("client")
+	@Path("/client/register")
 	@Consumes({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.TEXT_HTML })
 	@Produces({MediaType.APPLICATION_JSON,MediaType.TEXT_HTML })
 	public Response createOrSaveClientInfo(ClientType clientType) {
@@ -155,5 +160,26 @@ public class MasterServiceImpl implements IMasterService {
 		
 		
 		return Response.ok(client).build();
+	}
+	
+	@POST
+	@Path("client/login")
+	@Consumes({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.TEXT_HTML })
+	@Produces({MediaType.APPLICATION_JSON,MediaType.TEXT_HTML })
+	public Response loginClient(ClientAuthType clientType) {
+		Client client = new Client();
+		Client client2 = new Client();
+		client.setClientEmail(clientType.getClientEmail());
+		client.setClientPassword(clientType.getClientPassword());
+		if(client.getClientEmail() == null || client.getClientPassword() == null || client.getClientEmail().equals("") || client.getClientPassword().equals("")){
+			return Response.status(Response.Status.BAD_REQUEST).build();
+		}
+		
+		else if((client2 = clientDAO.loginClient(client))==null){
+			return Response.status(Response.Status.CONFLICT).build();
+		}
+		
+		
+		return Response.ok(client2).build();
 	}
 }

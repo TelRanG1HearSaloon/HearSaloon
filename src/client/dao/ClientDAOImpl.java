@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import master.models.Client;
+import master.models.Master;
 
 @Repository("clientDAO")
 public class ClientDAOImpl implements ClientDAO{
@@ -29,8 +30,14 @@ public class ClientDAOImpl implements ClientDAO{
 	}
 
 	@Override
-	public Client getClietnInfo(Client client) {
-		// TODO Auto-generated method stub
+	public Client loginClient(Client client) {
+		Client client2 = new Client();
+		if((client2 = em.find(Client.class, client.getClientEmail()))!=null){
+//			Master master = em.find(Master.class, updateMaster.getEmail());
+			if(client.getClientPassword().equals(client2.getClientPassword())){
+				return client2;
+			}
+		}
 		return null;
 	}
 
